@@ -9,6 +9,14 @@ for the others — that's the point.
 | **2. Independent numerical eigenvalue solve** (`cavity_eigenmode_check.py`) | The resonant-frequency *algebra* is self-consistent, via a completely different computational method (finite-difference PDE eigenvalue solve vs. closed-form formula) — catches transcription errors, sign errors, wrong mode selection | The underlying cavity-model physics itself (PMC side walls, no radiation, no surface waves) — this uses the same idealization, just solves it a different way | 0.55% error across 3 frequency/substrate cases (see script output) |
 | **3. Physical build + measurement** (`PHYSICAL_BUILD_AND_MEASUREMENT.md`) | Whether the model corresponds to reality at all — conductor loss, connector parasitics, finite ground plane, real substrate variance, radiation effects the cavity idealization ignores | — this is the ground truth leg | Pending — do this one yourself; the guide has the full BOM and procedure |
 
+*Supplementary (not a fourth leg — see `INDEPENDENT_CALCULATOR_CROSSCHECK.md`):* OpenRF's
+dimensional output (W, L, εr,eff) matches two other independently-written free calculators
+(vinoth.org, rftools.io) to within 0.01–0.07%, and one of them (vinoth.org, which publishes
+the identical full G1+G12 formula set) matches OpenRF's edge resistance to 0.02%. This
+confirms the *arithmetic* is implemented correctly against other people's independent code —
+it is explicitly **not** a substitute for leg 3, since none of these tools have ever measured
+a real antenna either. See that file for the honest version of what this does and doesn't prove.
+
 ## Why leg 2 is worth reading even though it "just confirms the same model"
 
 Building `cavity_eigenmode_check.py` caught two real, distinct bugs before it produced a
