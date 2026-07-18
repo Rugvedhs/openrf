@@ -113,34 +113,32 @@ body {
 
 /* ---------- layout ---------- */
 
+/* Mobile-first: single column, normal (static) flow is the DEFAULT for
+   everyone. The two-column desktop layout with a sticky left panel is
+   layered on top only above 860px, via min-width. This is deliberately the
+   opposite structure from a "base = desktop, override for mobile" approach:
+   with a single min-width override, there's no override-of-an-override to
+   get the cascade order wrong on, and no width is ever in a state where two
+   conflicting rules for the same property are both trying to apply. */
 .layout {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
 }
 
-@media (max-width: 860px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 .controls {
-  position: sticky;
-  top: 1.5rem;
+  position: static;
 }
 
-@media (max-width: 860px) {
-  /* The sticky left panel only makes sense in the two-column desktop layout —
-     once it's stacked full-width above the content, "sticky" pins it near the
-     top while the page tries to scroll past it, which reads as janky/stuck
-     scrolling on touch devices. Let it scroll normally with the rest of the
-     page on narrower screens instead. Placed after the base .controls rule
-     so it actually wins the cascade at this width (same specificity — the
-     later rule wins regardless of which one is behind a media query). */
+@media (min-width: 861px) {
+  .layout {
+    grid-template-columns: 300px 1fr;
+  }
+
   .controls {
-    position: static;
+    position: sticky;
+    top: 1.5rem;
   }
 }
 
