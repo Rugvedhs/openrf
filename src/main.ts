@@ -14,18 +14,18 @@ app.innerHTML = `
   <header class="masthead">
     <div>
       <h1>OpenRF</h1>
-      <p class="tagline">Microstrip patch antenna synthesis &amp; tradeoff analysis — transmission-line model, entirely client-side</p>
+      <p class="tagline">Microstrip patch antenna synthesis &amp; tradeoff analysis, transmission-line model, entirely client-side</p>
     </div>
     <nav>
       <button type="button" id="toggle-verify" class="linklike">textbook verification</button>
       &nbsp;·&nbsp;
-      <a href="./openrf-spec.md" target="_blank" rel="noopener">spec</a>
+      <a href="./openrf-spec.md">spec</a>
     </nav>
   </header>
 
   <section id="verify-panel" class="sheet hidden">
     <div class="section-heading"><span class="num">§0</span><h2>Verification against Balanis, <em>Antenna Theory</em>, Example 14.1</h2></div>
-    <p class="section-note">f0 = 10 GHz, εr = 2.2, h = 0.1588 cm, target Zin = 50 Ω — this tool's output compared against the book's published results.</p>
+    <p class="section-note">f0 = 10 GHz, εr = 2.2, h = 0.1588 cm, target Zin = 50 Ω. This tool's output compared against the book's published results.</p>
     <table class="datatable" id="verify-table"></table>
   </section>
 
@@ -78,7 +78,7 @@ app.innerHTML = `
           Export validation package (.md)
         </button>
         <p class="section-note" style="margin-top:0.4rem;">
-          Downloads a fabrication + measurement checklist pre-filled with these exact numbers — see
+          Downloads a fabrication + measurement checklist pre-filled with these exact numbers. See
           <code>validation/PHYSICAL_BUILD_AND_MEASUREMENT.md</code> for the full build guide.
         </p>
       </section>
@@ -86,7 +86,7 @@ app.innerHTML = `
       <section id="response-section" class="sheet hidden">
         <div class="section-heading"><span class="num">§3</span><h2>Predicted frequency response</h2></div>
         <p class="section-note">
-          Narrowband parallel-RLC model referenced to the target impedance (derivation and caveats in the source —
+          Narrowband parallel-RLC model referenced to the target impedance (derivation and caveats in the source,
           see <code>frequencyResponse.ts</code>). By construction the reflection coefficient is exactly zero at the
           design frequency.
         </p>
@@ -102,7 +102,7 @@ app.innerHTML = `
         <p class="section-note">
           Propagates typical fabrication tolerances (εr variance, laminate thickness variance, ±1 mil copper etch)
           through the as-built geometry to show how the real antenna's resonance and match are likely to shift from
-          the nominal prediction — the feed inset stays fixed at its designed position, as it would on a fabricated board.
+          the nominal prediction. The feed inset stays fixed at its designed position, as it would on a fabricated board.
         </p>
         <button id="run-mc" type="button" class="secondary">Run 1,000-trial Monte Carlo</button>
         <div id="mc-results" class="hidden" style="margin-top:0.9rem;">
@@ -124,8 +124,8 @@ app.innerHTML = `
       <section id="optimizer-section" class="sheet">
         <div class="section-heading"><span class="num">§5</span><h2>Design-space tradeoff (Pareto front)</h2></div>
         <p class="section-note">
-          Exhaustive grid search over substrate, thickness, and patch width at the target frequency/impedance —
-          not a genetic/PSO search (the space is small enough that exhaustive search finds the exact Pareto front
+          Exhaustive grid search over substrate, thickness, and patch width at the target frequency/impedance.
+          Not a genetic/PSO search: the space is small enough that exhaustive search finds the exact Pareto front
           in milliseconds; see the reasoning in <code>optimizer.ts</code>). Minimizes footprint, maximizes bandwidth.
         </p>
         <button id="run-optimize" type="button" class="secondary">Explore tradeoffs at this frequency/impedance</button>
@@ -141,12 +141,12 @@ app.innerHTML = `
   <footer class="colophon">
     Transmission-line model per Balanis, <em>Antenna Theory: Analysis and Design</em>, Ch. 14.
     Radiation Q/bandwidth derived from stored cavity energy vs. radiated power (see source comments for the full
-    derivation and its cross-checks). 100% client-side — nothing you enter leaves this browser tab.
+    derivation and its cross-checks). 100% client-side. Nothing you enter leaves this browser tab.
   </footer>
 `;
 
 function fmt(value: number, digits = 4): string {
-  return Number.isFinite(value) ? value.toPrecision(digits) : '—';
+  return Number.isFinite(value) ? value.toPrecision(digits) : 'N/A';
 }
 
 // ---------------------------------------------------------------------------
@@ -221,7 +221,7 @@ function renderResults(result: PatchResult): void {
     ['Edge resistance (Rin, y=0)', `${fmt(result.edgeResistance)} Ω`],
     [
       'Inset feed depth (y0)',
-      result.insetFeedDepth !== null ? `${fmt(result.insetFeedDepth * 1000)} mm from edge` : '— (unreachable)',
+      result.insetFeedDepth !== null ? `${fmt(result.insetFeedDepth * 1000)} mm from edge` : 'N/A (unreachable)',
     ],
   ];
   table.innerHTML = `<tbody>${rows.map(([k, v]) => `<tr><td>${k}</td><td class="num">${v}</td></tr>`).join('')}</tbody>`;
@@ -256,7 +256,7 @@ function renderFrequencyResponse(result: PatchResult, frequencyHz: number, targe
   const container = document.querySelector<HTMLElement>('#response-chart-container')!;
   container.innerHTML =
     renderFrequencyResponseChart(points, frequencyHz) +
-    '<figcaption>Fig. 1 — Predicted |S11| vs. frequency, narrowband model referenced to the target feed impedance.</figcaption>';
+    '<figcaption>Fig. 1. Predicted |S11| vs. frequency, narrowband model referenced to the target feed impedance.</figcaption>';
 
   document.querySelector<HTMLSpanElement>('#stat-q')!.textContent = result.radiationQ.toFixed(1);
   document.querySelector<HTMLSpanElement>('#stat-bw')!.textContent =
@@ -326,7 +326,7 @@ function renderMonteCarlo(mc: MonteCarloResult): void {
       renderFrequencyResponseChart(points, frequencyHz, {
         toleranceBandHz: [mc.resonantFrequencyHz.p5, mc.resonantFrequencyHz.p95],
       }) +
-      '<figcaption>Fig. 1 — Predicted |S11| vs. frequency, with the 5th–95th percentile resonance shift from the Monte Carlo tolerance run shaded.</figcaption>';
+      '<figcaption>Fig. 1. Predicted |S11| vs. frequency, with the 5th to 95th percentile resonance shift from the Monte Carlo tolerance run shaded.</figcaption>';
   }
 }
 
@@ -370,7 +370,7 @@ function renderOptimizerResults(): void {
   const container = document.querySelector<HTMLElement>('#pareto-chart-container')!;
   container.innerHTML =
     svg +
-    '<figcaption>Fig. 2 — Footprint vs. bandwidth for every evaluated (substrate, thickness, width) combination. Dashed line connects the Pareto-optimal front; click a point to inspect it.</figcaption>';
+    '<figcaption>Fig. 2. Footprint vs. bandwidth for every evaluated (substrate, thickness, width) combination. Dashed line connects the Pareto-optimal front; click a point to inspect it.</figcaption>';
 
   container.querySelectorAll<SVGGElement>('.chart-point').forEach((el) => {
     el.addEventListener('click', () => {

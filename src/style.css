@@ -283,10 +283,7 @@ table.datatable tr:last-child td {
 
 .tag {
   font-family: var(--mono);
-  font-size: 0.72rem;
-  padding: 0.1rem 0.4rem;
-  border: 1px solid currentColor;
-  border-radius: 2px;
+  font-size: 0.78rem;
 }
 
 .tag.ok {
@@ -297,29 +294,33 @@ table.datatable tr:last-child td {
   color: var(--bad);
 }
 
+.tag.ok::before {
+  content: '✓ ';
+}
+
+.tag.bad::before {
+  content: '✗ ';
+}
+
 /* ---------- notices ---------- */
 
 .notice {
-  background: var(--caution-bg);
-  border: 1px solid var(--caution-border);
-  border-radius: 2px;
-  padding: 0.7rem 0.9rem;
+  border-left: 2px solid var(--caution-border);
+  padding: 0.5rem 0 0.5rem 0.9rem;
   margin-top: 0.9rem;
 }
 
 .notice.error {
-  background: transparent;
-  border-color: var(--bad);
+  border-left-color: var(--bad);
 }
 
 .notice h3 {
   margin: 0 0 0.35rem;
-  font-size: 0.8rem;
-  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-family: var(--serif);
+  font-style: italic;
   font-weight: 600;
-  color: var(--caution-text);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
 .notice.error h3 {
@@ -330,7 +331,7 @@ table.datatable tr:last-child td {
   margin: 0;
   padding-left: 1.1rem;
   font-size: 0.83rem;
-  color: var(--caution-text);
+  color: var(--ink);
   line-height: 1.55;
 }
 

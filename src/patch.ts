@@ -248,7 +248,7 @@ export function synthesizeForWidth(
 
   if (length <= 0) {
     throw new PatchInputError(
-      'Substrate is too thick relative to the resonant wavelength — the fringing-field length ' +
+      'Substrate is too thick relative to the resonant wavelength, so the fringing-field length ' +
         'extension exceeds the resonant length itself, which is unphysical. This means the ' +
         'transmission-line model has broken down (not just degraded). Reduce substrate height ' +
         'or increase frequency.'
@@ -266,7 +266,7 @@ export function synthesizeForWidth(
     feasible = false;
     warnings.push(
       `Target impedance (${targetImpedanceOhm} Ω) exceeds the patch edge resistance ` +
-        `(${electrical.edgeResistance.toFixed(1)} Ω) — an inset feed can only lower impedance from ` +
+        `(${electrical.edgeResistance.toFixed(1)} Ω); an inset feed can only lower impedance from ` +
         'the edge value, so this target is unreachable by feed placement alone. Try a thinner ' +
         'substrate, higher εr, or a different feed technique (e.g. quarter-wave transformer).'
     );
@@ -361,7 +361,7 @@ function modelValidityWarnings(
   if (epsilonR > 10) {
     warnings.push(
       `εr = ${epsilonR} is high; accuracy at high permittivity has not been validated against ` +
-        'a textbook example in this tool — verify independently.'
+        'a textbook example in this tool, so verify independently.'
     );
   }
   const hOverLambda0 = heightM / wavelength0;
@@ -375,13 +375,13 @@ function modelValidityWarnings(
   if (lossTangent > 0.02) {
     warnings.push(
       `tan δ = ${lossTangent} is relatively lossy; dielectric loss is not folded into the ` +
-        'radiation-Q/bandwidth estimate — true bandwidth is likely somewhat wider than predicted, ' +
+        'radiation-Q/bandwidth estimate, so true bandwidth is likely somewhat wider than predicted, ' +
         'at the cost of radiation efficiency.'
     );
   }
   warnings.push(
     'Feed resistance uses the two-slot mutual-conductance correction (G1 + G12), but higher-order ' +
-      'coupling and conductor loss are still neglected — treat Rin as accurate to a few percent, not exact.'
+      'coupling and conductor loss are still neglected, so treat Rin as accurate to a few percent, not exact.'
   );
   warnings.push(
     'Bandwidth is derived from radiation Q alone (stored cavity energy vs. radiated power); ' +
