@@ -131,6 +131,19 @@ body {
   top: 1.5rem;
 }
 
+@media (max-width: 860px) {
+  /* The sticky left panel only makes sense in the two-column desktop layout —
+     once it's stacked full-width above the content, "sticky" pins it near the
+     top while the page tries to scroll past it, which reads as janky/stuck
+     scrolling on touch devices. Let it scroll normally with the rest of the
+     page on narrower screens instead. Placed after the base .controls rule
+     so it actually wins the cascade at this width (same specificity — the
+     later rule wins regardless of which one is behind a media query). */
+  .controls {
+    position: static;
+  }
+}
+
 /* ---------- sections ---------- */
 
 section.sheet {
